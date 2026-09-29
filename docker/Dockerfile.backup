@@ -1,0 +1,4 @@
+FROM postgres:16-alpine
+RUN apk add --no-cache bash coreutils
+COPY docker/backup/backup.sh /usr/local/bin/tgoat-backup
+RUN chmod 755 /usr/local/bin/tgoat-backup

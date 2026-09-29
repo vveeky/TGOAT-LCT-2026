@@ -1,0 +1,23 @@
+.git
+.venv
+**/.venv
+.env
+**/.env
+**/.env.*
+**/*.pem
+**/*.key
+**/__pycache__
+**/*.py[cod]
+**/.pytest_cache
+**/.mypy_cache
+**/.ruff_cache
+**/node_modules
+frontend/dist
+ml/data/raw
+ml/data/processed
+ml/data/interim
+ml/data/features
+
+# Local TLS material
+docker/.local-tls
+**/*.crt

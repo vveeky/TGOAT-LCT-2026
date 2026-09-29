@@ -1,0 +1,17 @@
+polars==1.44.2
+duckdb==1.5.5
+fastapi==0.141.1
+starlette==1.6.0
+anyio==4.14.0
+pydantic==2.13.5
+uvicorn[standard]==0.53.0
+pytest==9.1.1
+httpx2==2.13.0
+numpy==2.5.3
+pandas==3.0.5
+scikit-learn==1.9.1
+joblib==1.6.0
+openpyxl==3.1.5
+psycopg[binary,pool]==3.3.6
+
+ldap3==2.9.1

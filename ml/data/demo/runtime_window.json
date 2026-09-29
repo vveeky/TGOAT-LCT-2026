@@ -1,0 +1,10 @@
+{
+  "source_file": "risk-runtime-events-2026-06-object-5343.csv",
+  "source_sha256": "aa255a5796aa8f6a2500224baec5da92a95a1cba6959dab7df16b7493bbdca13",
+  "source_origin": "Bounded extraction from canonical processed events_2026.parquet; object_id=5343; timestamp >= 2026-06-22 00:00:00 and timestamp < 2026-07-01 00:00:00 (Europe/Moscow).",
+  "rows": 5240,
+  "object_id": 5343,
+  "available_from": "2026-06-22T00:00:00+03:00",
+  "available_to": "2026-06-30T23:59:59+03:00",
+  "snapshot_ts": "2026-06-30T23:59:59+03:00"
+}

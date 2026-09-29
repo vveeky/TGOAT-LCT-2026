@@ -1,0 +1,130 @@
+name: tgoat
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${TGOAT_POSTGRES_DB:-tgoat}
+      POSTGRES_USER: ${TGOAT_POSTGRES_USER:-tgoat}
+      POSTGRES_PASSWORD: ${TGOAT_POSTGRES_PASSWORD:?Set TGOAT_POSTGRES_PASSWORD in environment}
+    volumes:
+      - tgoat_pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      retries: 12
+      timeout: 4s
+    networks: [internal]
+
+  backend:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.backend
+    restart: unless-stopped
+    environment:
+      TGOAT_RUNTIME_MODE: normal
+      TGOAT_OPERATIONAL_STORAGE: postgres
+      TGOAT_OPERATIONAL_DATABASE_URL: postgresql://${TGOAT_POSTGRES_USER:-tgoat}:${TGOAT_POSTGRES_PASSWORD:?Set password}@postgres:5432/${TGOAT_POSTGRES_DB:-tgoat}
+      TGOAT_FEATURE_STATE_DB: /srv/data/feature-state.sqlite
+      TGOAT_SIMULATED_LIVE_MODE: ${TGOAT_SIMULATED_LIVE_MODE:-0}
+      TGOAT_SIMULATED_LIVE_INTERVAL_SECONDS: ${TGOAT_SIMULATED_LIVE_INTERVAL_SECONDS:-300}
+      TGOAT_SIMULATED_LIVE_AUTO_START: ${TGOAT_SIMULATED_LIVE_AUTO_START:-0}
+      TGOAT_AUTH_PROVIDER: ${TGOAT_AUTH_PROVIDER:-demo}
+      TGOAT_LDAP_URL: ${TGOAT_LDAP_URL:-}
+      TGOAT_LDAP_BASE_DN: ${TGOAT_LDAP_BASE_DN:-}
+      TGOAT_LDAP_BIND_DN: ${TGOAT_LDAP_BIND_DN:-}
+      TGOAT_LDAP_BIND_PASSWORD: ${TGOAT_LDAP_BIND_PASSWORD:-}
+      TGOAT_LDAP_GROUP_MAP_JSON: ${TGOAT_LDAP_GROUP_MAP_JSON:-{}}
+      TGOAT_LDAP_USER_FILTER: ${TGOAT_LDAP_USER_FILTER:-(uid={username})}
+      TGOAT_LDAP_CA_FILE: ${TGOAT_LDAP_CA_FILE:-}
+      TGOAT_LDAP_INSECURE_LOCAL_TEST: ${TGOAT_LDAP_INSECURE_LOCAL_TEST:-0}
+      TGOAT_WEATHER_EVENTS_FILE: /srv/data/weather.jsonl
+      DEMO_AUTH_TOKEN_SECRET: ${TGOAT_AUTH_SECRET:?Set random TGOAT_AUTH_SECRET}
+    volumes:
+      - tgoat_feature:/srv/data
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks: [internal]
+
+  simulated-feed:
+    profiles: [simulation]
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.backend
+    command: ["python", "-m", "backend.simulated_live_worker", "--wall-interval", "5"]
+    restart: "no"
+    environment:
+      TGOAT_RUNTIME_MODE: normal
+      TGOAT_OPERATIONAL_STORAGE: postgres
+      TGOAT_OPERATIONAL_DATABASE_URL: postgresql://${TGOAT_POSTGRES_USER:-tgoat}:${TGOAT_POSTGRES_PASSWORD:?Set password}@postgres:5432/${TGOAT_POSTGRES_DB:-tgoat}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks: [internal]
+
+  city-weather:
+    profiles: [weather]
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.backend
+    command: ["python", "scripts/fetch_public_weather.py", "--output", "/srv/data/weather.jsonl", "--interval", "3600"]
+    volumes:
+      - tgoat_feature:/srv/data
+    restart: unless-stopped
+    networks: [internal]
+
+  ldap:
+    image: osixia/openldap:1.5.0
+    profiles: [ldap]
+    restart: unless-stopped
+    environment:
+      LDAP_ORGANISATION: TGOAT Demo
+      LDAP_DOMAIN: tgoat.local
+      LDAP_ADMIN_PASSWORD: ${TGOAT_LDAP_ADMIN_PASSWORD:-admin-demo}
+    volumes:
+      - ./ldap/bootstrap.ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom/50-bootstrap.ldif:ro
+    networks: [internal]
+
+  backup:
+    profiles: [backups]
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.backup
+    environment:
+      DATABASE_URL: postgresql://${TGOAT_POSTGRES_USER:-tgoat}:${TGOAT_POSTGRES_PASSWORD:?Set password}@postgres:5432/${TGOAT_POSTGRES_DB:-tgoat}
+      BACKUP_DIR: /backups
+      RETENTION_DAYS: ${TGOAT_BACKUP_RETENTION_DAYS:-14}
+      BACKUP_INTERVAL_SECONDS: ${TGOAT_BACKUP_INTERVAL_SECONDS:-86400}
+    entrypoint: ["/bin/bash", "-c"]
+    command: ['while true; do /usr/local/bin/tgoat-backup || echo "Backup failed" >&2; sleep "$$BACKUP_INTERVAL_SECONDS"; done']
+    volumes:
+      - tgoat_backups:/backups
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    networks: [internal]
+
+  web:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on: [backend]
+    environment:
+      TGOAT_PUBLIC_HTTPS_PORT: ${TGOAT_HTTPS_PORT:-8443}
+    volumes:
+      - ${TGOAT_CERT_DIR:?Set TGOAT_CERT_DIR to a directory containing tls.crt and tls.key}:/etc/nginx/certs:ro
+    ports:
+      - "${TGOAT_HTTPS_PORT:-8443}:443"
+      - "${TGOAT_HTTP_PORT:-8080}:80"
+    networks: [internal]
+
+volumes:
+  tgoat_pg:
+  tgoat_feature:
+  tgoat_backups:
+
+networks:
+  internal:

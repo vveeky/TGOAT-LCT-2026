@@ -1,0 +1,32 @@
+[
+  {
+    "metadata": {
+      "id": "e337c67b-55c2-4fef-8949-eb260e7fb7fd",
+      "publisherId": "Shan.code-settings-sync",
+      "publisherDisplayName": "Shan"
+    },
+    "name": "code-settings-sync",
+    "publisher": "Shan",
+    "version": "3.4.3"
+  },
+  {
+    "metadata": {
+      "id": "fcf0848c-96b3-487a-a655-01aed955a594",
+      "publisherId": "jolaleye.horizon-theme-vscode",
+      "publisherDisplayName": "jolaleye"
+    },
+    "name": "horizon-theme-vscode",
+    "publisher": "jolaleye",
+    "version": "2.0.2"
+  },
+  {
+    "metadata": {
+      "id": "d96e79c6-8b25-4be3-8545-0e0ecefcae03",
+      "publisherId": "vscodevim.vim",
+      "publisherDisplayName": "vscodevim"
+    },
+    "name": "vim",
+    "publisher": "vscodevim",
+    "version": "1.12.4"
+  }
+]

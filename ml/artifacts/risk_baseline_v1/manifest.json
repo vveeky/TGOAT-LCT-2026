@@ -1,0 +1,122 @@
+{
+  "dataset": "risk_baseline_v1",
+  "status": "built",
+  "unit": "object_x_6h_snapshot",
+  "target": "proxy_anomaly_24h",
+  "target_definition": "conservative episode onset in (t0, t0+24h] after confirmed non-alarm on same channel",
+  "horizon_hours": 24,
+  "snapshot_hours": 6,
+  "lookbacks_hours": [
+    1,
+    6,
+    24,
+    168
+  ],
+  "rows": 854256,
+  "objects": 78,
+  "min_snapshot_ts": "2019-01-01 05:59:59",
+  "max_snapshot_ts": "2026-06-30 23:59:59",
+  "labeled_rows": 851136,
+  "source_rows": 313546016,
+  "source_partitions": [
+    "ml/data/processed/events_2019.parquet",
+    "ml/data/processed/events_2020.parquet",
+    "ml/data/processed/events_2021.parquet",
+    "ml/data/processed/events_2022.parquet",
+    "ml/data/processed/events_2023.parquet",
+    "ml/data/processed/events_2024.parquet",
+    "ml/data/processed/events_2025.parquet",
+    "ml/data/processed/events_2026.parquet"
+  ],
+  "split_policy": {
+    "train": [
+      2019,
+      2020,
+      2022,
+      2023
+    ],
+    "validation": [
+      2024
+    ],
+    "test": [
+      2025
+    ],
+    "recent_2026": [
+      2026
+    ],
+    "transition_excluded": [
+      2021
+    ]
+  },
+  "snapshot_grid": "78 objects × 4 snapshots/day across the available calendar period; dates with no records remain in the grid",
+  "target_incomplete_reasons": {
+    "whole_day_no_records": 1560,
+    "cross_split_target_window": 1248,
+    "end_of_data": 312
+  },
+  "cross_split_purge_policy": "A supervised snapshot is retained only when its complete 24h target horizon stays within the same temporal split role. Features may use past events across split boundaries.",
+  "whole_day_no_records_policy": "Conservative modeling policy for ambiguous dates with no records; not customer-confirmed technical data loss. Any 24h target horizon intersecting such a date is unknown and excluded from supervised splits.",
+  "target_end_of_data_policy": "Any 24h horizon beyond the available 2026 registered-timestamp dataset is unknown and excluded from supervised splits.",
+  "known_gap_dates": [
+    "2024-04-07",
+    "2024-04-08",
+    "2026-06-01"
+  ],
+  "event_id_deduplication": false,
+  "unmatched_historical_channels": "excluded from object model and retained only in source audit",
+  "timestamp_semantics": "source registration timestamp; network delay/backfill and physical event time are not modeled",
+  "organizer_state_reference_contract": {
+    "confirmed_join_key": "тип_датчика",
+    "state_lookup_key": ["тип_датчика", "название_состояния"],
+    "must_not_join_by": "ид_канала_данных",
+    "confirmed_example": {
+      "ид_канала_данных": 120578,
+      "тип_датчика": "КД АВ",
+      "states": [
+        "Дыма нет",
+        "Обнаружен дым",
+        "Движения нет",
+        "Обнаружено движение",
+        "Движение вверх",
+        "Движение вниз",
+        "Движение влево",
+        "Движение вправо"
+      ]
+    },
+    "phase1_effect": "Documentation/reference semantics only; source тревожное remains canonical and frozen Phase 1 features, targets, and 87-feature model contract are unchanged.",
+    "ambiguous_mapping_policy": "Fail closed when the sensor-type/state-name key is missing or maps to conflicting alarm flags; do not infer from channel ID or physical meaning."
+  },
+  "diagnostic_stage": {
+    "scan_scope": "exhaustive filter over all eight canonical processed Parquet partitions",
+    "matched_malfunction_text_records": 1487653,
+    "special_code_records": 8156,
+    "sparse_channel_hour_rows": 211747,
+    "special_codes": [-100, 255, -127, -3276],
+    "physical_semantics": "neutral diagnostic features only; no thresholds or physical units inferred"
+  },
+  "feature_stage_materialization": ["base_snapshots", "diagnostics", "alarm_recency", "final_narrow_join"],
+  "feature_count": 87,
+  "episode_onsets": {
+    "total": 1579061,
+    "by_year": {"2019": 76109, "2020": 167160, "2021": 867789, "2022": 73068, "2023": 55870, "2024": 64427, "2025": 141778, "2026": 132860},
+    "train_years": 372207,
+    "validation_2024": 64427,
+    "test_2025": 141778,
+    "recent_2026": 132860,
+    "transition_2021": 867789,
+    "positive_snapshot_to_onset_ratio": 0.097504
+  },
+  "object_prevalence_summary": {"min": 0.005040, "median": 0.105480, "max": 0.957111, "objects_zero_positive": 0, "objects_above_50_percent": 5},
+  "behavioral_future_feature_test": "passed: adding events strictly after t0 changed the target from 0 to 1 while all feature columns at t0 remained identical",
+  "target_sanity_artifact": "ml/artifacts/risk_baseline_v1/target_sanity.json",
+  "target_sanity_scope": "materialized snapshot parquet plus existing annual channel-hour parquet; no raw scan",
+  "target_sanity_spearman": {"prevalence_vs_current_channel_count": 0.434584, "prevalence_vs_mean_active_channel_count": 0.686769, "prevalence_vs_mean_event_volume_24h": 0.578649, "prevalence_vs_onset_rate_per_channel_day": 0.533504},
+  "target_sanity_high_prevalence_objects": [28, 3215, 3356, 4391, 5122],
+  "final_output_bytes": 32312495,
+  "phase2_evaluation": {
+    "technical": ["precision", "recall", "pr_auc", "threshold_analysis", "temporal_validation_test"],
+    "user_facing": "merge repeated positive object forecasts into user-facing forecast episodes/cards"
+  },
+  "feature_uses_future_data": false,
+  "ml_training": false
+}

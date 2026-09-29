@@ -1,0 +1,1083 @@
+.moscow-okrugs-shell {
+  --map-ground: #eef1f3;
+  --map-label: #66717a;
+  --map-tile-filter: grayscale(0.82) saturate(0.28) brightness(1.05) contrast(0.88) hue-rotate(175deg);
+  --map-tile-opacity: 0.95;
+  --map-signal-indicator: var(--accent);
+  position: relative;
+  container-name: moscow-map;
+  container-type: inline-size;
+  overflow: hidden;
+  border-radius: 24px;
+  background: var(--map-ground);
+}
+
+.app-layout .dashboard-page .dashboard-map-layer .moscow-okrugs-shell {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  border-radius: inherit;
+}
+
+.moscow-okrugs-shell .moscow-okrugs-map,
+.moscow-okrugs-shell .moscow-okrugs-map.leaflet-container {
+  background: var(--map-ground);
+}
+
+.moscow-okrugs-shell .moscow-okrugs-map .leaflet-tile-pane {
+  opacity: var(--map-tile-opacity);
+  filter: var(--map-tile-filter);
+}
+
+.app-layout .dashboard-page .moscow-okrugs-shell .moscow-map-title {
+  top: 78px;
+  left: 22px;
+  z-index: 500;
+  display: flex;
+  max-width: min(430px, calc(100% - 120px));
+  flex-direction: column;
+  align-items: flex-start;
+  pointer-events: none;
+}
+
+.moscow-okrugs-shell .moscow-map-title > span {
+  color: var(--map-label);
+  font-family: var(--font-ui);
+  font-size: 9px;
+  font-weight: 650;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.moscow-okrugs-shell .moscow-map-title h2 {
+  margin: 3px 0 0;
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: clamp(22px, 2.5vw, 34px);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.moscow-okrugs-shell .moscow-map-title small {
+  margin-top: 7px;
+  color: var(--muted);
+  font-family: var(--font-ui);
+  font-size: 10px;
+  line-height: 1.25;
+}
+
+.moscow-okrugs-shell .watermelon-map-replay {
+  margin-top: 7px;
+  color: var(--accent-ink, var(--accent));
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.moscow-okrugs-shell .okrug-label {
+  color: var(--map-label) !important;
+  font-family: var(--font-ui) !important;
+  font-size: 11px !important;
+  font-weight: 650 !important;
+  letter-spacing: 0.035em;
+  text-shadow: 0 1px 3px rgba(238, 244, 248, 0.96);
+}
+
+.moscow-okrugs-shell .okrug-hover-card {
+  border: 1px solid rgba(255, 255, 255, 0.76);
+  border-radius: 15px;
+  background: rgba(248, 250, 252, 0.92);
+  box-shadow: 0 8px 24px rgba(35, 71, 96, 0.13), inset 0 1px 0 rgba(255, 255, 255, 0.72);
+  -webkit-backdrop-filter: blur(14px) saturate(112%);
+  backdrop-filter: blur(14px) saturate(112%);
+}
+
+.watermelon-map-toolbar {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  left: 18px;
+  z-index: 680;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 46px;
+  padding: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 22px;
+  background: rgba(248, 250, 252, 0.78);
+  box-shadow: 0 10px 26px rgba(41, 42, 39, 0.11), inset 0 1px 0 rgba(255, 255, 255, 0.68);
+  -webkit-backdrop-filter: blur(18px) saturate(116%);
+  backdrop-filter: blur(18px) saturate(116%);
+}
+
+.watermelon-map-location,
+.watermelon-map-search {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  border-radius: 15px;
+  color: var(--text);
+}
+
+.watermelon-map-location select {
+  box-sizing: border-box;
+  min-height: 32px;
+  max-width: 150px;
+  padding: 0 28px 0 12px;
+  appearance: none;
+  border: 1px solid rgba(78, 68, 60, 0.12);
+  border-radius: 14px;
+  outline: none;
+  background: rgba(255, 255, 255, 0.54);
+  color: var(--text);
+  cursor: pointer;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 650;
+}
+
+.watermelon-map-location {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.watermelon-map-location::after {
+  position: absolute;
+  right: 10px;
+  color: var(--muted);
+  content: '⌄';
+  pointer-events: none;
+}
+
+.watermelon-map-search {
+  flex: 1 1 220px;
+  gap: 7px;
+  min-height: 32px;
+  margin-left: auto;
+  padding: 0 10px;
+  border: 1px solid rgba(78, 68, 60, 0.15);
+  background: rgba(255, 255, 255, 0.52);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.66);
+}
+
+.watermelon-map-search > span:first-child {
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1;
+}
+
+.watermelon-map-search input {
+  min-width: 0;
+  flex: 1;
+  padding: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 11px;
+}
+
+.watermelon-map-search input::placeholder {
+  color: #898d90;
+}
+
+.watermelon-map-location select:focus-visible,
+.watermelon-map-search:focus-within {
+  border-color: rgba(var(--accent-rgb), 0.54);
+  box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.1);
+}
+
+.watermelon-map-location select:disabled,
+.watermelon-map-search input:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.moscow-okrugs-shell .watermelon-map-zoom-controls {
+  position: absolute;
+  bottom: 19px;
+  left: 18px;
+  z-index: 720;
+  display: grid;
+  gap: 6px;
+  pointer-events: auto;
+}
+
+.moscow-okrugs-shell .watermelon-map-zoom-controls button {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.76);
+  border-radius: 14px;
+  background: rgba(248, 250, 252, 0.84);
+  color: var(--text);
+  box-shadow: 0 5px 14px rgba(41, 42, 39, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.68);
+  -webkit-backdrop-filter: blur(14px) saturate(112%);
+  backdrop-filter: blur(14px) saturate(112%);
+  cursor: pointer;
+  transition: background-color 120ms ease, color 120ms ease, transform 100ms ease;
+}
+
+.moscow-okrugs-shell .watermelon-map-zoom-controls button span {
+  display: block;
+  font-family: var(--font-ui);
+  font-size: 22px;
+  font-weight: 450;
+  line-height: 1;
+  transform: translateY(-1px);
+}
+
+.moscow-okrugs-shell .watermelon-map-zoom-controls button:hover:not(:disabled) {
+  background: #fff;
+  color: var(--accent);
+}
+
+.moscow-okrugs-shell .watermelon-map-zoom-controls button:active:not(:disabled) {
+  transform: scale(0.94);
+}
+
+.moscow-okrugs-shell .watermelon-map-zoom-controls button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.moscow-okrugs-shell .watermelon-map-zoom-controls button:disabled {
+  cursor: default;
+  opacity: 0.48;
+}
+
+.moscow-okrugs-shell .leaflet-marker-icon.watermelon-object-marker-icon {
+  display: grid;
+  width: 20px !important;
+  height: 20px !important;
+  place-items: center;
+  border: 0 !important;
+  background: transparent !important;
+  cursor: pointer;
+}
+
+.watermelon-object-marker {
+  position: relative;
+  display: block;
+  width: 18px;
+  height: 18px;
+  transition: transform 120ms ease;
+}
+
+.watermelon-object-marker__dot {
+  position: absolute;
+  inset: 3px;
+  border: 2px solid var(--risk-no-data-stroke);
+  border-radius: 50%;
+  background: var(--risk-no-data);
+  box-shadow: 0 2px 8px rgba(41, 42, 39, 0.24);
+}
+
+.watermelon-object-marker.is-normal .watermelon-object-marker__dot {
+  border-color: var(--risk-low);
+  background: var(--risk-low);
+}
+
+.watermelon-object-marker.is-medium .watermelon-object-marker__dot {
+  border-color: var(--risk-medium);
+  background: var(--risk-medium);
+}
+
+.watermelon-object-marker.is-high .watermelon-object-marker__dot {
+  border-color: var(--risk-high);
+  background: var(--risk-high);
+}
+
+.watermelon-object-marker.is-critical .watermelon-object-marker__dot {
+  border-color: var(--risk-critical);
+  background: var(--risk-critical);
+}
+
+.watermelon-object-marker__signal {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 7px;
+  height: 7px;
+  box-sizing: border-box;
+  border: 1.5px solid #f8fafc;
+  border-radius: 50%;
+  background: var(--map-signal-indicator);
+  box-shadow: 0 1px 3px rgba(28, 46, 59, 0.2);
+}
+
+.moscow-okrugs-shell .leaflet-marker-icon.watermelon-object-marker-icon:hover .watermelon-object-marker,
+.moscow-okrugs-shell .leaflet-marker-icon.watermelon-object-marker-icon:focus-visible .watermelon-object-marker {
+  transform: scale(1.2);
+}
+
+.app-layout .dashboard-page .moscow-okrugs-shell .leaflet-popup-content-wrapper,
+.app-layout .dashboard-page .moscow-okrugs-shell .leaflet-popup-tip {
+  border: 1px solid rgba(255, 255, 255, 0.74);
+  border-radius: 17px;
+  background: rgba(248, 250, 252, 0.94);
+  color: var(--text);
+  box-shadow: 0 8px 24px rgba(35, 71, 96, 0.14);
+  -webkit-backdrop-filter: blur(16px) saturate(112%);
+  backdrop-filter: blur(16px) saturate(112%);
+}
+
+.app-layout .dashboard-page .moscow-okrugs-shell .leaflet-popup-content {
+  min-width: 190px;
+  margin: 14px 16px;
+  font-family: var(--font-ui);
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.moscow-okrugs-shell .leaflet-popup-close-button {
+  color: var(--muted) !important;
+}
+
+.watermelon-map-popup-content {
+  display: grid;
+  gap: 6px;
+  color: var(--text);
+}
+
+.watermelon-map-popup-content > strong {
+  max-width: 250px;
+  overflow-wrap: anywhere;
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.watermelon-map-popup-id,
+.watermelon-map-popup-content small {
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.watermelon-map-popup-content small {
+  margin-top: 2px;
+}
+
+.watermelon-map-open-signal {
+  width: fit-content;
+  max-width: 100%;
+  padding: 4px 8px;
+  border: 1px solid rgba(var(--accent-rgb), 0.2);
+  border-radius: 999px;
+  background: rgba(var(--accent-rgb), 0.07);
+  color: var(--accent-ink, var(--accent));
+  font-size: 10px;
+  font-weight: 650;
+}
+
+.watermelon-map-popup-risk strong {
+  font-size: 12px;
+}
+
+.watermelon-map-popup-unavailable {
+  color: var(--muted);
+}
+
+.watermelon-map-action {
+  display: inline-flex;
+  width: fit-content;
+  min-height: 32px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 3px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 12px;
+  background: rgba(var(--accent-rgb), 0.12);
+  color: var(--accent-ink, var(--accent));
+  cursor: pointer;
+  font: inherit;
+  font-size: 10px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background-color 120ms ease, color 120ms ease;
+}
+
+.watermelon-map-action:hover {
+  background: var(--accent);
+  color: #fff;
+}
+
+.watermelon-map-action:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.watermelon-map-popup-content .watermelon-map-action span {
+  font-size: 14px;
+  line-height: 1;
+}
+
+.moscow-okrugs-shell .moscow-map-drilldown {
+  right: 18px;
+  bottom: 18px;
+  left: 70px;
+}
+
+.app-layout .dashboard-page .moscow-okrugs-shell .moscow-map-back,
+.app-layout .dashboard-page .moscow-okrugs-shell .moscow-map-selection {
+  min-height: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  background: rgba(248, 250, 252, 0.84);
+  box-shadow: 0 5px 14px rgba(41, 42, 39, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.68);
+  -webkit-backdrop-filter: blur(14px) saturate(112%);
+  backdrop-filter: blur(14px) saturate(112%);
+}
+
+.app-layout .dashboard-page .moscow-okrugs-shell .moscow-map-back:hover {
+  background: #fff;
+}
+
+.app-layout .dashboard-page .moscow-okrugs-shell .moscow-map-back span,
+.app-layout .dashboard-page .moscow-okrugs-shell .moscow-map-selection strong {
+  color: var(--accent-ink, var(--accent));
+}
+
+.moscow-okrugs-shell .moscow-map-loading,
+.moscow-okrugs-shell .moscow-map-error,
+.moscow-okrugs-shell .watermelon-map-data-state {
+  position: absolute;
+  z-index: 690;
+  box-sizing: border-box;
+  border: 1px solid rgba(255, 255, 255, 0.76);
+  border-radius: 17px;
+  background: rgba(248, 250, 252, 0.94);
+  color: var(--text);
+  box-shadow: 0 10px 28px rgba(35, 71, 96, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  -webkit-backdrop-filter: blur(16px) saturate(112%);
+  backdrop-filter: blur(16px) saturate(112%);
+}
+
+.moscow-okrugs-shell .moscow-map-loading {
+  top: 50%;
+  left: 50%;
+  padding: 12px 18px;
+  transform: translate(-50%, -50%);
+}
+
+.moscow-okrugs-shell .moscow-map-error {
+  top: 50%;
+  left: 50%;
+  width: min(360px, calc(100% - 32px));
+  display: grid;
+  gap: 9px;
+  padding: 18px;
+  transform: translate(-50%, -50%);
+}
+
+.moscow-okrugs-shell .moscow-map-error span,
+.moscow-okrugs-shell .watermelon-map-data-state > span {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.moscow-okrugs-shell .moscow-map-error button,
+.moscow-okrugs-shell .watermelon-map-data-state button {
+  width: fit-content;
+  min-height: 34px;
+  padding: 0 13px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+  font: inherit;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.moscow-okrugs-shell .watermelon-map-data-state {
+  top: 72px;
+  right: 18px;
+  width: min(286px, calc(100% - 36px));
+  display: grid;
+  gap: 6px;
+  padding: 12px 14px;
+}
+
+.moscow-okrugs-shell .watermelon-map-data-state.is-empty {
+  top: 50%;
+  right: auto;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.moscow-okrugs-shell .watermelon-map-data-state > strong {
+  font-size: 12px;
+}
+
+@container moscow-map (max-width: 600px) {
+  .watermelon-map-toolbar {
+    top: 10px;
+    right: 10px;
+    left: 10px;
+    gap: 5px;
+    min-height: 42px;
+    padding: 5px;
+    border-radius: 18px;
+  }
+
+  .watermelon-map-location select {
+    max-width: 126px;
+    min-height: 30px;
+    padding-right: 23px;
+    padding-left: 9px;
+    font-size: 10px;
+  }
+
+  .watermelon-map-search {
+    min-height: 30px;
+    padding-right: 7px;
+    padding-left: 8px;
+  }
+
+  .watermelon-map-search input {
+    font-size: 10px;
+  }
+
+  .app-layout .dashboard-page .moscow-okrugs-shell .moscow-map-title {
+    top: 66px;
+    left: 14px;
+  }
+
+  .moscow-okrugs-shell .moscow-map-drilldown {
+    right: 10px;
+    bottom: 12px;
+    left: 58px;
+  }
+
+  .moscow-okrugs-shell .watermelon-map-zoom-controls {
+    bottom: 12px;
+    left: 10px;
+  }
+
+  .moscow-okrugs-shell .watermelon-map-zoom-controls button {
+    width: 36px;
+    height: 36px;
+    border-radius: 12px;
+  }
+
+  .moscow-okrugs-shell .watermelon-map-data-state {
+    top: 62px;
+    right: 10px;
+    width: min(250px, calc(100% - 20px));
+  }
+}
+
+/* Keep live simulation and map filters attached to the map, away from the widgets. */
+.dashboard-page .dashboard-map-layer {
+  grid-row: 2;
+  grid-column: 1;
+}
+
+.dashboard-page .map-controls-menu {
+  position: relative;
+  z-index: 800;
+  display: grid;
+  grid-row: 2;
+  grid-column: 1;
+  align-self: end;
+  justify-self: end;
+  width: max-content;
+  max-width: 100%;
+  margin: 12px;
+}
+
+.dashboard-page .map-controls-menu-trigger {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  min-height: 42px;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.78);
+  border-radius: 12px;
+  background: rgba(238, 248, 254, 0.88);
+  box-shadow: 0 5px 16px rgba(35, 71, 96, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  color: var(--text-soft);
+  font: 600 11px/1 var(--font-ui);
+  cursor: pointer;
+  -webkit-backdrop-filter: blur(12px) saturate(116%);
+  backdrop-filter: blur(12px) saturate(116%);
+  transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease, transform 120ms ease;
+}
+
+.dashboard-page .map-controls-menu-trigger:hover,
+.dashboard-page .map-controls-menu-trigger:focus-visible,
+.dashboard-page .map-controls-menu.is-open .map-controls-menu-trigger {
+  border-color: rgba(var(--accent-rgb), 0.34);
+  background: rgba(248, 252, 255, 0.96);
+  color: var(--accent-ink);
+}
+
+.dashboard-page .map-controls-menu-trigger:focus-visible {
+  outline: 2px solid rgba(var(--accent-rgb), 0.42);
+  outline-offset: 2px;
+}
+
+.dashboard-page .map-controls-menu-trigger:active {
+  transform: scale(0.97);
+}
+
+.dashboard-page .map-controls-menu-popover {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  right: 0;
+  display: grid;
+  width: min(352px, calc(100vw - 44px));
+  max-height: min(72vh, 560px);
+  gap: 12px;
+  overflow: auto;
+  padding: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.82);
+  border-radius: 18px;
+  background: rgba(235, 246, 254, 0.96);
+  box-shadow: 0 14px 34px rgba(23, 67, 98, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.74);
+  color: var(--text);
+  -webkit-backdrop-filter: blur(22px) saturate(120%);
+  backdrop-filter: blur(22px) saturate(120%);
+}
+
+.dashboard-page .map-controls-section {
+  display: grid;
+  min-width: 0;
+  gap: 8px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(84, 148, 188, 0.16);
+}
+
+.dashboard-page .map-controls-section:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.dashboard-page .map-controls-section h2 {
+  margin: 0;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 650;
+  line-height: 1.3;
+}
+
+.dashboard-page .map-controls-section p,
+.dashboard-page .map-controls-section small {
+  margin: 0;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.dashboard-page .map-controls-section p strong {
+  color: var(--text-soft);
+  font-weight: 650;
+}
+
+.dashboard-page .map-controls-section > button,
+.dashboard-page .map-controls-section > label {
+  min-height: 34px;
+  border: 1px solid var(--glass-line);
+  border-radius: 10px;
+  background: rgba(250, 253, 255, 0.76);
+  color: var(--text-soft);
+  font: 550 11px/1.3 var(--font-ui);
+}
+
+.dashboard-page .map-controls-section > button {
+  justify-self: start;
+  padding: 0 10px;
+  cursor: pointer;
+}
+
+.dashboard-page .map-controls-section > button:hover,
+.dashboard-page .map-controls-section > button:focus-visible {
+  border-color: rgba(var(--accent-rgb), 0.38);
+  color: var(--accent-ink);
+}
+
+.dashboard-page .map-controls-section > label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 10px;
+  cursor: pointer;
+}
+
+.dashboard-page .map-controls-section > label input {
+  accent-color: var(--accent);
+}
+
+.dashboard-page .map-controls-menu .replay-controls {
+  min-width: 0;
+  gap: 9px;
+  margin: 0;
+  padding: 10px;
+  border: 1px solid var(--glass-line);
+  border-radius: 13px;
+  background: rgba(250, 253, 255, 0.7);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.68);
+  font-size: 11px;
+}
+
+.dashboard-page .map-controls-menu .replay-controls > div:first-child strong {
+  color: var(--text);
+  line-height: 1.35;
+}
+
+.dashboard-page .map-controls-menu .replay-controls > div:first-child span,
+.dashboard-page .map-controls-menu .replay-controls > span {
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+.dashboard-page .map-controls-menu .replay-controls-actions {
+  align-items: center;
+  gap: 6px;
+}
+
+.dashboard-page .map-controls-menu .replay-controls-actions select,
+.dashboard-page .map-controls-menu .replay-controls-actions input,
+.dashboard-page .map-controls-menu .replay-controls-actions button {
+  box-sizing: border-box;
+  min-height: 32px;
+  max-width: 100%;
+  border: 1px solid var(--glass-line);
+  border-radius: 9px;
+  background: rgba(248, 252, 255, 0.9);
+  color: var(--text-soft);
+  font: 550 10px/1.25 var(--font-ui);
+}
+
+.dashboard-page .map-controls-menu .replay-controls-actions select,
+.dashboard-page .map-controls-menu .replay-controls-actions input {
+  padding: 4px 8px;
+}
+
+.dashboard-page .map-controls-menu .replay-controls-actions button {
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+.dashboard-page .map-controls-menu .replay-controls-actions button:hover:not(:disabled),
+.dashboard-page .map-controls-menu .replay-controls-actions select:focus-visible,
+.dashboard-page .map-controls-menu .replay-controls-actions input:focus-visible,
+.dashboard-page .map-controls-menu .replay-controls-actions button:focus-visible {
+  border-color: rgba(var(--accent-rgb), 0.42);
+  color: var(--accent-ink);
+  outline: 2px solid rgba(var(--accent-rgb), 0.2);
+  outline-offset: 1px;
+}
+
+@media (max-width: 720px) {
+  .dashboard-page .map-controls-menu {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    grid-row: 2;
+    grid-column: 1;
+    width: max-content;
+    margin: 0;
+    justify-self: end;
+    justify-items: end;
+  }
+
+  .dashboard-page .map-controls-menu.is-open {
+    justify-items: end;
+  }
+
+  .dashboard-page .map-controls-menu-trigger {
+    width: 40px;
+    height: 40px;
+    min-height: 40px;
+  }
+
+  .dashboard-page .map-controls-menu-popover {
+    position: absolute;
+    right: 0;
+    bottom: calc(100% + 8px);
+    width: min(352px, calc(100vw - 44px));
+    max-height: min(64vh, 440px);
+    box-sizing: border-box;
+    margin: 0;
+  }
+}
+
+/* District choices are direct items in the expanded Monitoring section. */
+.sidebar-map-controls-slot:not(:empty) {
+  display: block;
+  padding: 5px 0 5px;
+}
+
+.sidebar-map-district-list {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+  max-height: min(62vh, 520px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+
+.sidebar-map-district-option {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  min-height: 38px;
+  align-items: center;
+  padding: 0 12px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--text-soft);
+  text-align: left;
+  font: 550 12px/1.3 var(--font-ui);
+  cursor: pointer;
+  transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease;
+}
+
+.sidebar-map-district-option:hover,
+.sidebar-map-district-option:focus-visible {
+  border-color: rgba(255, 255, 255, 0.52);
+  background: rgba(246, 252, 255, 0.54);
+  color: var(--text);
+}
+
+.sidebar-map-district-option:focus-visible {
+  outline: 2px solid rgba(var(--accent-rgb), 0.38);
+  outline-offset: 1px;
+}
+
+.sidebar-map-district-option.is-selected {
+  border-color: rgba(255, 255, 255, 0.72);
+  background: rgba(246, 252, 255, 0.82);
+  color: var(--text);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.54), 0 4px 12px rgba(29, 92, 132, 0.05);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sidebar-map-district-option {
+    transition: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dashboard-page .map-controls-menu-trigger {
+    transition: none;
+  }
+}
+
+/* Stage 13 map skin adapted to the Watermelon marker and district-bounded clusters. */
+.dashboard-page .moscow-okrugs-shell {
+  --map-ground: #eef1f3;
+  --map-label: #66717a;
+  --map-system: #6f8fa6;
+  --map-hover: #6fa8cf;
+  --map-tile-filter: grayscale(0.82) saturate(0.28) brightness(1.05) contrast(0.88) hue-rotate(175deg);
+  --map-tile-opacity: 0.95;
+  background: var(--map-ground);
+}
+
+.dashboard-page .dashboard-map-layer,
+.dashboard-page .moscow-okrugs-map,
+.dashboard-page .moscow-okrugs-map.leaflet-container {
+  background: var(--map-ground);
+}
+
+.dashboard-page .moscow-okrugs-map .leaflet-tile-pane {
+  opacity: var(--map-tile-opacity);
+  filter: var(--map-tile-filter);
+}
+
+.dashboard-page .moscow-okrugs-map .leaflet-marker-icon.map-object-cluster-wrap {
+  display: grid;
+  place-items: center;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none;
+  cursor: pointer;
+}
+
+.dashboard-page .moscow-okrugs-map .map-object-cluster {
+  position: relative;
+  box-sizing: border-box;
+  display: grid;
+  width: 100%;
+  height: 100%;
+  place-items: center;
+  border: 1px solid rgba(104, 103, 96, 0.38);
+  border-radius: 50%;
+  background: rgba(248, 250, 252, 0.86);
+  color: var(--text);
+  box-shadow: 0 5px 14px rgba(41, 42, 39, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.64);
+  -webkit-backdrop-filter: blur(10px) saturate(112%);
+  backdrop-filter: blur(10px) saturate(112%);
+  transition: transform 140ms var(--ease-out, cubic-bezier(0, 0, 0.2, 1)), border-color 140ms ease, box-shadow 140ms ease;
+}
+
+.dashboard-page .moscow-okrugs-map .map-cluster-count {
+  display: block;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  color: inherit;
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.dashboard-page .moscow-okrugs-map .map-object-cluster__signal-count {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  display: grid;
+  min-width: 15px;
+  height: 15px;
+  box-sizing: border-box;
+  place-items: center;
+  padding: 0 3px;
+  border: 1.5px solid rgba(248, 250, 252, 0.98);
+  border-radius: 999px;
+  background: var(--map-signal-indicator);
+  color: #fff;
+  font: 700 9px/1 var(--font-ui);
+  box-shadow: 0 2px 6px rgba(28, 46, 59, 0.2);
+}
+
+.dashboard-page .moscow-okrugs-map .map-object-cluster-wrap:hover .map-object-cluster,
+.dashboard-page .moscow-okrugs-map .map-object-cluster-wrap:focus-visible .map-object-cluster {
+  transform: scale(1.1);
+  border-color: rgba(var(--accent-rgb), 0.68);
+  box-shadow: 0 8px 20px rgba(41, 42, 39, 0.18), 0 0 0 5px rgba(var(--accent-rgb), 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.72);
+}
+
+.dashboard-page .moscow-okrugs-map .leaflet-control-zoom {
+  overflow: hidden;
+  border: 1px solid rgba(123, 151, 169, 0.28);
+  border-radius: 12px;
+  background: rgba(248, 251, 253, 0.82);
+  box-shadow: 0 5px 16px rgba(35, 71, 96, 0.12);
+  -webkit-backdrop-filter: blur(10px) saturate(110%);
+  backdrop-filter: blur(10px) saturate(110%);
+}
+
+.dashboard-page .moscow-okrugs-map .leaflet-control-zoom a {
+  width: 34px;
+  height: 34px;
+  border-bottom: 1px solid rgba(123, 151, 169, 0.2);
+  background: rgba(248, 251, 253, 0.84);
+  color: var(--text-soft);
+  font-size: 18px;
+  line-height: 33px;
+}
+
+.dashboard-page .moscow-okrugs-map .leaflet-control-zoom a:hover {
+  background: #f8fbfd;
+  color: var(--accent-ink);
+}
+
+.dashboard-page .moscow-okrugs-shell .watermelon-map-zoom-controls button {
+  border-color: rgba(123, 151, 169, 0.28);
+  background: rgba(248, 251, 253, 0.86);
+  color: var(--text-soft);
+  box-shadow: 0 5px 16px rgba(35, 71, 96, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.68);
+  -webkit-backdrop-filter: blur(10px) saturate(110%);
+  backdrop-filter: blur(10px) saturate(110%);
+}
+
+.dashboard-page .moscow-okrugs-shell .watermelon-map-zoom-controls button:hover:not(:disabled) {
+  background: #f8fbfd;
+  color: var(--accent-ink);
+}
+
+.dashboard-page .moscow-map-title span,
+.dashboard-page .okrug-label {
+  color: var(--map-label) !important;
+}
+
+.dashboard-page .moscow-map-title span {
+  color: var(--map-label-muted, var(--map-label)) !important;
+}
+
+.dashboard-page .moscow-map-title h2 {
+  color: var(--map-label-primary, var(--text));
+}
+
+.dashboard-page .okrug-label {
+  color: var(--map-label-district, var(--map-label)) !important;
+}
+
+.dashboard-page .okrug-label {
+  font-family: var(--font-ui) !important;
+  font-weight: 650 !important;
+  text-shadow: 0 1px 3px rgba(238, 244, 248, 0.96);
+}
+
+.dashboard-page .moscow-map-drilldown :is(.moscow-map-back, .moscow-map-selection),
+.dashboard-page .okrug-hover-card,
+.dashboard-page .moscow-okrugs-map .leaflet-popup-content-wrapper,
+.dashboard-page .moscow-okrugs-map .leaflet-popup-tip {
+  border-color: rgba(255, 255, 255, 0.74);
+  background: rgba(248, 251, 253, 0.92);
+  color: var(--text);
+  box-shadow: 0 8px 24px rgba(35, 71, 96, 0.12);
+  -webkit-backdrop-filter: blur(14px) saturate(112%);
+  backdrop-filter: blur(14px) saturate(112%);
+}
+
+.dashboard-page .okrug-hover-card {
+  border: 1px solid rgba(255, 255, 255, 0.74);
+  border-radius: 14px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dashboard-page .moscow-okrugs-map .map-object-cluster {
+    transition: none;
+  }
+}
+
+/* The single Ice Blue palette applies only to OSM map tiles and district styling;
+   Leaflet object, cluster, and popup panes keep their own semantic colors. */
+.dashboard-page .moscow-okrugs-shell {
+  --map-ground: #C5D9E9;
+  --map-base: #C5D9E9;
+  --map-urban: #D6E4EF;
+  --map-suburban: #B4CEE3;
+  --map-forest: #91B2CF;
+  --map-park: #A3C1DA;
+  --map-water: #86B7D9;
+  --map-road-small: #E0EAF2;
+  --map-road-secondary: #91AFC9;
+  --map-road-primary: #648CB1;
+  --map-highway: #547DA5;
+  --map-railway: #7899B6;
+  --map-boundary-primary: #4A92C9;
+  --map-boundary-active: #123E66;
+  --map-label-primary: #304F70;
+  --map-label-district: #426689;
+  --map-label-muted: #617F9B;
+  --map-label: var(--map-label-muted);
+  --map-tile-filter: grayscale(1) sepia(0.7) hue-rotate(180deg) saturate(1.4) brightness(0.89) contrast(0.92);
+  --map-tile-opacity: 0.82;
+}
+
+.app-layout .dashboard-page .moscow-okrugs-shell .moscow-map-drilldown {
+  display: none;
+}

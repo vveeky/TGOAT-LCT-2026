@@ -1,0 +1,43 @@
+dn: ou=people,dc=tgoat,dc=local
+objectClass: organizationalUnit
+ou: people
+
+dn: ou=groups,dc=tgoat,dc=local
+objectClass: organizationalUnit
+ou: groups
+
+dn: uid=central,ou=people,dc=tgoat,dc=local
+objectClass: inetOrgPerson
+cn: Central Dispatcher
+sn: Dispatcher
+uid: central
+userPassword: central-demo
+
+dn: uid=admin,ou=people,dc=tgoat,dc=local
+objectClass: inetOrgPerson
+cn: IS Administrator
+sn: Administrator
+uid: admin
+userPassword: admin-demo
+
+dn: uid=tech28,ou=people,dc=tgoat,dc=local
+objectClass: inetOrgPerson
+cn: Technician 28
+sn: Technician
+uid: tech28
+userPassword: tech-demo
+
+dn: cn=ods,ou=groups,dc=tgoat,dc=local
+objectClass: groupOfNames
+cn: ods
+member: uid=central,ou=people,dc=tgoat,dc=local
+
+dn: cn=is-admin,ou=groups,dc=tgoat,dc=local
+objectClass: groupOfNames
+cn: is-admin
+member: uid=admin,ou=people,dc=tgoat,dc=local
+
+dn: cn=complex-28,ou=groups,dc=tgoat,dc=local
+objectClass: groupOfNames
+cn: complex-28
+member: uid=tech28,ou=people,dc=tgoat,dc=local

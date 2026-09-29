@@ -1,0 +1,12 @@
+.git
+.DS_Store
+.env
+.env.*
+node_modules
+dist
+.vite
+coverage
+**/*.pem
+**/*.key
+**/__pycache__
+**/*.py[cod]

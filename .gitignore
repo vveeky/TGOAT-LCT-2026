@@ -1,0 +1,75 @@
+# macOS
+.DS_Store
+
+# VS Code
+.vscode/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Python tools
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# ML models
+*.pkl
+*.joblib
+*.cbm
+*.onnx
+*.pt
+*.pth
+!ml/artifacts/risk_baseline_v1/phase2_hgb.joblib
+
+# Large/raw data
+*.7z
+*.zip
+*.rar
+
+# Production and generated datasets. Small fixtures under tests/fixtures remain trackable.
+ml/data/raw/
+ml/data/processed/
+ml/data/interim/
+ml/data/features/
+*.xlsx
+*.xls
+
+# Databases
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs
+*.log
+
+# Node / Frontend
+node_modules/
+.venv/
+dist/
+build/
+.next/
+.nuxt/
+coverage/
+
+# IDE
+.idea/
+
+# Temporary files
+*.tmp
+*.temp
+
+# Local TLS material
+docker/.local-tls/
+*.crt
